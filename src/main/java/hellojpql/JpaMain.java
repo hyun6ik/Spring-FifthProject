@@ -1,6 +1,9 @@
 package hellojpql;
 
+import hellojpql.domain.Address;
 import hellojpql.domain.Member;
+import hellojpql.domain.MemberDTO;
+import hellojpql.domain.Team;
 
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -23,10 +26,28 @@ public class JpaMain {
             member.setAge(26);
             em.persist(member);
 
-           Member result = em.createQuery("select m from Member m where m.name = :name", Member.class)
-                .setParameter("name", "Yoon")
-                .getSingleResult();
-           
+            em.flush();
+            em.clear();
+
+            List<MemberDTO> result = em.createQuery("select new hellojpql.domain.MemberDTO(m.name, m.age) from Member m", MemberDTO.class)
+                    .getResultList();
+            MemberDTO memberDTO = result.get(0);
+            System.out.println("memberDTO = " + memberDTO.getName());
+            System.out.println("memberDTO = " + memberDTO.getAge());
+
+
+//            List<Address> orderResult = em.createQuery("select o.address from Order o", Address.class)
+//                    .getResultList();
+//
+//            List<Team> teamresult = em.createQuery("select m.team From Member m", Team.class)
+//                    .getResultList();
+//
+//            List<Member> result2 = em.createQuery("select m.team from Member m", Member.class)
+//                    .getResultList();
+//
+//            Member findMember = result2.get(0);
+//            findMember.setAge(20);
+
 
 //            TypedQuery<Member> query = em.createQuery("select m from Member m", Member.class);
 //            List<Member> resultList = query.getResultList();
