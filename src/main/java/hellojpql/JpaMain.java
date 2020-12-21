@@ -21,19 +21,33 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member = new Member();
-            member.setName("Yoon");
-            member.setAge(26);
-            em.persist(member);
+
+
+            for(int i =0; i<100; i++){
+                Member member = new Member();
+                member.setName("member" + i);
+                member.setAge(i);
+                em.persist(member);
+            }
 
             em.flush();
             em.clear();
 
-            List<MemberDTO> result = em.createQuery("select new hellojpql.domain.MemberDTO(m.name, m.age) from Member m", MemberDTO.class)
+            List<Member> result = em.createQuery("select m from Member m order by m.age desc", Member.class)
+                    .setFirstResult(0)
+                    .setMaxResults(10)
                     .getResultList();
-            MemberDTO memberDTO = result.get(0);
-            System.out.println("memberDTO = " + memberDTO.getName());
-            System.out.println("memberDTO = " + memberDTO.getAge());
+            System.out.println("result.size() = " + result.size());
+            for (Member member1 : result) {
+                System.out.println("member1 = " + member1);
+            }
+
+
+//            List<MemberDTO> result = em.createQuery("select new hellojpql.domain.MemberDTO(m.name, m.age) from Member m", MemberDTO.class)
+//                    .getResultList();
+//            MemberDTO memberDTO = result.get(0);
+//            System.out.println("memberDTO = " + memberDTO.getName());
+//            System.out.println("memberDTO = " + memberDTO.getAge());
 
 
 //            List<Address> orderResult = em.createQuery("select o.address from Order o", Address.class)
