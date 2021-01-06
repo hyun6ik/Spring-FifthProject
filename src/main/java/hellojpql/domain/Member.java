@@ -25,6 +25,9 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
+    private MemberType type;
+
     @Override
     public String toString() {
         return "Member{" +
