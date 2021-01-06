@@ -32,12 +32,37 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            String query = "select nullif(m.name, '관리자') as name from Member m";
-            List<String> result = em.createQuery(query, String.class)
-                    .getResultList();
-            for (String s : result) {
-                System.out.println("s = " + s);
-            }
+            String query = "select size(t.members) From team t";
+
+
+
+//            String query = "select locate('de','abcdefg') From Member m";
+//            List<Integer> resultList = em.createQuery(query, Integer.class)
+//                    .getResultList();
+//            for (Integer integer : resultList) {
+//                System.out.println("integer = " + integer);
+//            }
+//            String query = "select substring(m.name,2,3) From Member m";
+//            List<String> resultList = em.createQuery(query, String.class)
+//                    .getResultList();
+//            for (String s : resultList) {
+//                System.out.println("s = " + s);
+//            }
+
+//            String query = "select concat('a', 'b') From Member m";
+//            List<String> resultList = em.createQuery(query, String.class)
+//                    .getResultList();
+//            for (String s : resultList) {
+//                System.out.println("s = " + s);
+//            }
+
+
+//            String query = "select nullif(m.name, '관리자') as name from Member m";
+//            List<String> result = em.createQuery(query, String.class)
+//                    .getResultList();
+//            for (String s : result) {
+//                System.out.println("s = " + s);
+//            }
 
 //            String query = "select coalesce(m.name, '이름 없는 회원') as name from Member m";
 //            List<String> result = em.createQuery(query, String.class)
