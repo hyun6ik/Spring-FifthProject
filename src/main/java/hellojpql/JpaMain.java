@@ -21,47 +21,15 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Team team = new Team();
-            team.setName("teamA");
-            em.persist(team);
-
             Member member = new Member();
-            member.setName("teamA");
-            member.setAge(26);
-            member.setTeam(team);
+            member.setName("member1");
+            member.setAge(27);
+            em.persist(member);
 
-                em.persist(member);
-
-
-            em.flush();
-            em.clear();
-            String query = "select m from Member m left join Team t on m.name = t.name";
-            List<Member> result = em.createQuery(query, Member.class)
-                    .getResultList();
-            System.out.println("result.size() = " + result.size());
-            for (Member member1 : result) {
-                System.out.println("member1 = " + member1);
-            }
-
-
-//            List<MemberDTO> result = em.createQuery("select new hellojpql.domain.MemberDTO(m.name, m.age) from Member m", MemberDTO.class)
-//                    .getResultList();
-//            MemberDTO memberDTO = result.get(0);
-//            System.out.println("memberDTO = " + memberDTO.getName());
-//            System.out.println("memberDTO = " + memberDTO.getAge());
-
-
-//            List<Address> orderResult = em.createQuery("select o.address from Order o", Address.class)
-//                    .getResultList();
-//
-//            List<Team> teamresult = em.createQuery("select m.team From Member m", Team.class)
-//                    .getResultList();
-//
-//            List<Member> result2 = em.createQuery("select m.team from Member m", Member.class)
-//                    .getResultList();
-//
-//            Member findMember = result2.get(0);
-//            findMember.setAge(20);
+            Member result = em.createQuery("select m from Member m where m.name = :name", Member.class)
+                    .setParameter("name", "member1")
+                    .getSingleResult();
+            System.out.println("result = " + result);
 
 
 //            TypedQuery<Member> query = em.createQuery("select m from Member m", Member.class);
@@ -70,14 +38,12 @@ public class JpaMain {
 //                System.out.println("member1 = " + member1);
 //            }
 //
-//            TypedQuery<Member> query2 = em.createQuery("select m from Member m where m.age = 26", Member.class);
-//            Member singleResult = query2.getSingleResult();
+//            TypedQuery<String> query2 = em.createQuery("select m.name from Member m", String.class);
+//            String singleResult = query2.getSingleResult();
 //            System.out.println("singleResult = " + singleResult);
 //
 //
-//
-//            TypedQuery<String> query4 = em.createQuery("select m.name from Member m ", String.class);
-//            Query query5 = em.createQuery("select m.name, m.age from Member m ", Member.class);
+//            Query query3 = em.createQuery("select m.name, m.age from Member m");
 
 
             tx.commit();
