@@ -1,9 +1,6 @@
 package hellojpql;
 
-import hellojpql.domain.Address;
-import hellojpql.domain.Member;
-import hellojpql.domain.MemberDTO;
-import hellojpql.domain.Team;
+import hellojpql.domain.*;
 
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -26,11 +23,50 @@ public class JpaMain {
             member.setAge(27);
             em.persist(member);
 
-            Member result = em.createQuery("select m from Member m where m.name = :name", Member.class)
-                    .setParameter("name", "member1")
-                    .getSingleResult();
-            System.out.println("result = " + result);
+            em.flush();
+            em.clear();
 
+            List<MemberDTO> resultList = em.createQuery("select new hellojpql.domain.MemberDTO(m.name, m.age) from Member m", MemberDTO.class)
+                    .getResultList();
+            MemberDTO memberDTO = resultList.get(0);
+            System.out.println("memberDTO.getName() = " + memberDTO.getName());
+            System.out.println("memberDTO.getName() = " + memberDTO.getAge());
+
+
+//            List<Object[]> resultList = em.createQuery("select m.name, m.age from Member m")
+//                    .getResultList();
+//            Object[] objects = resultList.get(0);
+//            System.out.println("objects[0] = " + objects[0]);
+//            System.out.println("objects[0] = " + objects[1]);
+
+
+
+//            List resultList = em.createQuery("select distinct m.name, m.age from Member m ")
+//                    .getResultList();
+//            Object o = resultList.get(0);
+//            Object[] result = (Object[]) o;
+//            System.out.println("result = " + result[0]);
+//            System.out.println("result = " + result[1]);
+
+
+//            List<Address> resultList = em.createQuery("select o.address from Order o", Address.class)
+//                    .getResultList();
+
+
+
+//            List<Member> result = em.createQuery("select m From Member m", Member.class)
+//                    .getResultList();
+//
+//            Member findMember = result.get(0);
+//            findMember.setAge(20);
+
+
+
+//            Member result = em.createQuery("select m from Member m where m.name = :name", Member.class)
+//                    .setParameter("name", "member1")
+//                    .getSingleResult();
+//            System.out.println("result = " + result);
+//
 
 //            TypedQuery<Member> query = em.createQuery("select m from Member m", Member.class);
 //            List<Member> resultList = query.getResultList();
