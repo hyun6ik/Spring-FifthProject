@@ -18,25 +18,45 @@ public class JpaMain {
         tx.begin();
 
         try {
-            for(int i =0; i<100; i++) {
+                Team team = new Team();
+                team.setName("teamA");
+                em.persist(team);
+
                 Member member = new Member();
-                member.setName("member" + i);
-                member.setAge(i);
+                member.setName("member1");
+                member.setAge(10);
+
                 em.persist(member);
-            }
+
             em.flush();
             em.clear();
 
-            List<Member> result = em.createQuery("select m from Member m order by m.age desc", Member.class)
-                    .setFirstResult(0)
-                    .setMaxResults(10)
+            String query = "select m from Member m left join m.team t on t.name = 'teamA'";
+            List<Member> resultList = em.createQuery(query, Member.class)
                     .getResultList();
+            System.out.println("resultList = " + resultList);
+//            String query = "select m from Member m, Team t where m.name = t.name";
+//            List<Member> resultList = em.createQuery(query, Member.class)
+//                    .getResultList();
+//            System.out.println("resultList = " + resultList);
 
-            System.out.println("result.size() = " + result.size());
-            for (Member member1 : result) {
-                System.out.println("member1 = " + member1);
+//            List<Member> resultList = em.createQuery("select m from Member m join m.team t where t.name = :teamName", Member.class)
+//                    .setParameter("teamName", "teamA")
+//                    .getResultList();
+//            System.out.println("resultList = " + resultList);
 
-            }
+
+//
+//            List<Member> result = em.createQuery("select m from Member m order by m.age desc", Member.class)
+//                    .setFirstResult(0)
+//                    .setMaxResults(10)
+//                    .getResultList();
+//
+//            System.out.println("result.size() = " + result.size());
+//            for (Member member1 : result) {
+//                System.out.println("member1 = " + member1);
+//
+//            }
 
 
 //            List<MemberDTO> resultList = em.createQuery("select new hellojpql.domain.MemberDTO(m.name, m.age) from Member m", MemberDTO.class)
