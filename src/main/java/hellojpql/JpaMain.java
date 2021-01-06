@@ -32,7 +32,13 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            String query = "select size(t.members) From team t";
+            // 상태 필드 : String query = "select m.name from Member m";
+            // 단일 값 연관 경로 : 묵시적 내부 조인 발생, 탐색 O (묵시적 내부 조인은 좋은 방향이 아니다)
+            // String query = "select m.team from Member m";
+            // 컬렉션 값 연관 경로 : 묵시적 내부 조인 발생, but 탐색X
+            // String query = "select t.members From Team t";
+            // From절에서 명시적 조인을 통해 별칭을 얻으면 별칭을 통해 탐색 가능
+            // --> String query = "select m.name From Team t join t.members m";
 
 
 
