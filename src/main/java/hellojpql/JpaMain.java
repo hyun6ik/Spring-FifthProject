@@ -18,19 +18,123 @@ public class JpaMain {
         tx.begin();
 
         try {
-                Team team = new Team();
-                team.setName("teamA");
-                em.persist(team);
+                Team teamA = new Team();
+                teamA.setName("팀A");
+                em.persist(teamA);
 
-                Member member = new Member();
-                member.setName("member1");
-                member.setAge(10);
-                member.setType(MemberType.ADMIN);
+                Team teamB = new Team();
+                teamB.setName("팀B");
+                em.persist(teamB);
 
-                em.persist(member);
+                Member member1 = new Member();
+                member1.setName("회원1");
+                member1.setTeam(teamA);
+                em.persist(member1);
+
+                Member member2 = new Member();
+                member2.setName("회원2");
+                member2.setTeam(teamA);
+                em.persist(member2);
+
+                Member member3 = new Member();
+                member3.setName("회원3");
+                member3.setTeam(teamB);
+                em.persist(member3);
+
+                Member member4 = new Member();
+                member4.setName("회원4");
+                em.persist(member4);
+
 
             em.flush();
             em.clear();
+
+            String query = "select t From Team t join t.members m";
+            List<Team> resultList = em.createQuery(query, Team.class)
+                    .getResultList();
+
+            System.out.println("resultList.size() = " + resultList.size());
+            for (Team team : resultList) {
+                System.out.println("team = " + team);
+            }
+
+//            String query = "select distinct t from Team t join fetch t.members";
+//            List<Team> result = em.createQuery(query, Team.class)
+//                    .getResultList();
+//
+//            System.out.println("result.size() = " + result.size());
+//            for (Team team : result) {
+//                System.out.println("team = " + team.getName() + "| members= " + team.getMembers().size());
+//                for( Member member : team.getMembers()){
+//                    System.out.println("member = " + member);
+//
+//                }
+//            }
+
+
+//            String query = "select t from Team t join fetch t.members";
+//            List<Team> result = em.createQuery(query, Team.class)
+//                    .getResultList();
+
+//            System.out.println("result.size() = " + result.size());
+//            for (Team team : result) {
+//                System.out.println("team = " + team.getName() + "| members= " + team.getMembers().size());
+//                for( Member member : team.getMembers()){
+//                    System.out.println("member = " + member);
+//
+//                }
+//            }
+
+
+
+//            String query = "select t from Team t join fetch t.members";
+//            List<Team> result = em.createQuery(query, Team.class)
+//                    .getResultList();
+//            for (Team team : result) {
+//                System.out.println("team = " + team.getName() + "| members= " + team.getMembers().size());
+//                for( Member member : team.getMembers()){
+//                    System.out.println("member = " + member);
+//
+//                }
+//            }
+
+
+
+//            String query = "select t from Team t join fetch t.members";
+//            List<Team> result = em.createQuery(query, Team.class)
+//                    .getResultList();
+//            for (Team team : result) {
+//                System.out.println("team = " + team.getName() + "|" + team.getMembers().size());
+//                for( Member member : team.getMembers()){
+//                    System.out.println("member = " + member);
+//
+//                }
+//            }
+
+//            String query = "select m from Member m join fetch m.team";
+//            List<Member> members = em.createQuery(query, Member.class)
+//                    .getResultList();
+//            for (Member member : members) {
+//                System.out.println("member = " + member.getName() + ", " + member.getTeam().getName());
+//                // 실제 데이터 (처음부터 채워져 있음)
+//                // 지연로딩 X
+//                //if 회원 100명 --> N + 1
+//            }
+
+
+//            String query = "select m from Member m";
+//            List<Member> members = em.createQuery(query, Member.class)
+//                    .getResultList();
+//            for (Member member : members) {
+//                System.out.println("member = " + member.getName() + ", " + member.getTeam().getName());
+                  // 프록시
+//                //회원1, 팀A(SQL)
+//                //회원2, 팀A(1차캐시)
+//                //회원3, 팀B(SQL)
+//                //회원4, 팀X(SQL)
+//
+//                //if 회원 100명 --> N + 1
+//            }
 
             // 상태 필드 : String query = "select m.name from Member m";
             // 단일 값 연관 경로 : 묵시적 내부 조인 발생, 탐색 O (묵시적 내부 조인은 좋은 방향이 아니다)
