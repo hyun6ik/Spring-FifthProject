@@ -49,19 +49,40 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            String query = "select t From Team t";
-            List<Team> result = em.createQuery(query, Team.class)
-                    .setFirstResult(0)
-                    .setMaxResults(2)
+            String query = "select m from Member m where m.team = :team";
+            List<Member> resultList = em.createQuery(query, Member.class)
+                    .setParameter("team", teamA)
                     .getResultList();
-            System.out.println("result.size() = " + result.size());
-            for (Team team : result) {
-                System.out.println("team = " + team.getName() + "| members= " + team.getMembers().size());
-                for( Member member : team.getMembers()){
-                    System.out.println("member = " + member);
-
-                }
+            for (Member member : resultList) {
+                System.out.println("member = " + member);
             }
+
+
+//            String query = "select m from Member m where m = :member";
+//            Member findMember = em.createQuery(query, Member.class)
+//                    .setParameter("member", member1)
+//                    .getSingleResult();
+//            System.out.println("findMember = " + findMember);
+
+
+            //JPQL에서 엔티티를 직접 사용하면 SQL에서 해당 엔티티의 기본 키 값을 사용
+            //select count(m.id) from Member m = select count(m) from Member m
+
+
+
+//            String query = "select t From Team t";
+//            List<Team> result = em.createQuery(query, Team.class)
+//                    .setFirstResult(0)
+//                    .setMaxResults(2)
+//                    .getResultList();
+//            System.out.println("result.size() = " + result.size());
+//            for (Team team : result) {
+//                System.out.println("team = " + team.getName() + "| members= " + team.getMembers().size());
+//                for( Member member : team.getMembers()){
+//                    System.out.println("member = " + member);
+//
+//                }
+//            }
 
 
 //            String query = "select t From Team t join t.members m";
