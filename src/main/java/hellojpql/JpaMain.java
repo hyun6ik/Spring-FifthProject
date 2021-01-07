@@ -49,12 +49,22 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            List<Member> resultList = em.createNamedQuery("Member.findByName", Member.class)
-                    .setParameter("name", "회원1")
-                    .getResultList();
-            for (Member member : resultList) {
-                System.out.println("member = " + member);
-            }
+            //flush 자동 호출
+            int resultCount = em.createQuery("update Member m set m.age = 20")
+                    .executeUpdate();
+            Member findMember = em.find(Member.class, member1.getId());
+            System.out.println("findMember = " + findMember.getAge());
+
+            System.out.println("resultCount = " + resultCount);
+
+
+
+//            List<Member> resultList = em.createNamedQuery("Member.findByName", Member.class)
+//                    .setParameter("name", "회원1")
+//                    .getResultList();
+//            for (Member member : resultList) {
+//                System.out.println("member = " + member);
+//            }
 
 //            String query = "select m from Member m where m.team = :team";
 //            List<Member> resultList = em.createQuery(query, Member.class)
